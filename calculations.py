@@ -11,3 +11,4 @@ def filter_by_category(expenses, category):
 def get_all_amounts(expenses):
     amounts = list(map(lambda exp: exp.amount, expenses))
     return amounts
+

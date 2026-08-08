@@ -1,3 +1,4 @@
+
 expenses = []
 import calculations
 import expense
@@ -10,6 +11,7 @@ while True:
     print("4. Delete Expenses")
     print("5. View Total Expenses")
     print("6. View Expenses by Category")
+    print("7. Sort Expenses by Amount")
 
     choice = input("Enter your choice: ")
 
@@ -75,7 +77,26 @@ while True:
                     print(f"Amount: {exp.amount}, Description: {exp.description}")
             else:
                 print(f"No expenses found for category: {category}")
-    
+
+
+    elif choice == "7":
+        if not expenses:
+         print("No expenses have been recorded yet.")
+        else:
+            print("\n===== Expenses Sorted by Amount =====")
+            sort=input("Enter 'asc' for ascending or 'desc' for descending order: ").strip().lower()
+            if sort == 'asc':
+                sorted_expenses = sorted(expenses, key=lambda exp: exp.amount)
+            elif sort == 'desc':
+                sorted_expenses = sorted(expenses, key=lambda exp: exp.amount, reverse=True)
+            else:
+                print("Invalid sort order. Please enter 'asc' or 'desc'.")
+                continue
+
+            print("\n===== Sorted Expenses =====")
+            for exp in sorted_expenses:
+                print(exp)
+        
            
     else:
         print("Invalid choice, try again.")
