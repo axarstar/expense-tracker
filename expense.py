@@ -1,4 +1,4 @@
-class expense:
+class Expense:
 
     def __init__(self, amount, category, description):
         self.amount = amount
@@ -9,7 +9,7 @@ class expense:
         return f"Amount: {self.amount}, Category: {self.category}, Description: {self.description}"
 
 
-class recurringExpense(expense):
+class RecurringExpense(Expense):
 
     def __init__(self, amount, category, description, frequency):
         super().__init__(amount, category, description)

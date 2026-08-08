@@ -15,6 +15,7 @@ while True:
     print("7. Sort Expenses by Amount")
     print("8. View Statistics (Average, Maximum, Minimum)")
     print("9. Save Expenses to CSV")
+    print("10. Load Expenses from CSV")
 
     choice = input("Enter your choice: ")
 
@@ -32,7 +33,7 @@ while True:
         
         if val == "yes":
             frequency = input("Enter the frequency (e.g. weekly, monthly): ")
-            new_expense = expense.recurringExpense(amount, category, description, frequency)
+            new_expense = expense.RecurringExpense(amount, category, description, frequency)
         else:
             new_expense = expense.expense(amount, category, description)
         expenses.append(new_expense)
@@ -110,7 +111,42 @@ while True:
             print(f"Maximum Expense: {stats['Maximum']}")
             print(f"Minimum Expense: {stats['Minimum']}")  
 
-             
+    elif choice == "9":
+        if not expenses:
+            print("No expenses have been recorded yet.")
+        else:
+            # Convert expenses to a list of dictionaries for DataFrame
+            expenses_data = []
+            for exp in expenses:
+                exp_dict = {
+                    "Amount": exp.amount,
+                    "Category": exp.category,
+                    "Description": exp.description
+                }
+                if isinstance(exp, expense.RecurringExpense):
+                    exp_dict["Frequency"] = exp.frequency
+                else:
+                    exp_dict["Frequency"] = None
+                expenses_data.append(exp_dict)
+            df = pd.DataFrame(expenses_data)
+            df.to_csv("expenses.csv", index=False)
+            print("Expenses saved to expenses.csv successfully!")  
+
+    elif choice == "10":
+        try:
+            df = pd.read_csv("expenses.csv")
+            expenses.clear()  # Clear existing expenses before loading new ones
+            for _, row in df.iterrows():
+                if pd.notna(row["Frequency"]):
+                    loaded_expense = expense.RecurringExpense(row["Amount"], row["Category"], row["Description"], row["Frequency"])
+                else:
+                    loaded_expense = expense.Expense(row["Amount"], row["Category"], row["Description"])
+                expenses.append(loaded_expense)
+            print("Expenses loaded from expenses.csv successfully!")
+        except FileNotFoundError:
+            print("No saved expenses found. Please save expenses first.")
+        except Exception as e:
+            print(f"An error occurred while loading expenses: {e}")               
            
     else:
         print("Invalid choice, try again.")
