@@ -1,3 +1,4 @@
+import pandas as pd
 
 expenses = []
 import calculations
@@ -12,6 +13,8 @@ while True:
     print("5. View Total Expenses")
     print("6. View Expenses by Category")
     print("7. Sort Expenses by Amount")
+    print("8. View Statistics (Average, Maximum, Minimum)")
+    print("9. Save Expenses to CSV")
 
     choice = input("Enter your choice: ")
 
@@ -96,7 +99,18 @@ while True:
             print("\n===== Sorted Expenses =====")
             for exp in sorted_expenses:
                 print(exp)
-        
+
+    elif choice == "8":
+        if not expenses:
+            print("No expenses have been recorded yet.")
+        else:
+            stats = calculations.get_statistics(expenses)
+            print("\n===== Expense Statistics =====")
+            print(f"Average Expense: {stats['Average']}")
+            print(f"Maximum Expense: {stats['Maximum']}")
+            print(f"Minimum Expense: {stats['Minimum']}")  
+
+             
            
     else:
         print("Invalid choice, try again.")
